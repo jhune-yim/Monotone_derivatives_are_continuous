@@ -1,5 +1,228 @@
+\documentclass[11pt,a4paper]{amsart}
 
-%%% Local Variables:
-%%% mode: LaTeX
-%%% TeX-master: t
-%%% End:
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{graphicx}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\title{A Monotone Derivative is Continuous}
+\author{}
+\date{14 March 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+A classical theorem of Darboux states that derivatives have the Intermediate Value Property.
+In this note, we prove that if $f'$ is monotone on an interval, then $f'$ is continuous on that interval.
+We present two proofs: one based on Darboux's Theorem, and another based on one-sided limits and the Mean Value Theorem.
+\end{abstract}
+
+\section{Introduction}
+
+Let $f:I\to\mathbb{R}$ be differentiable on an open interval $I$.
+Although the derivative of a differentiable function need not be continuous, it still satisfies the Intermediate Value Property.
+For example, the function
+\[
+f(x)=
+\begin{cases}
+x^2\sin(1/x), & x\neq 0,\\
+0, & x=0
+\end{cases}
+\]
+is differentiable on $\mathbb{R}$, but its derivative is not continuous at $0$.
+
+In this note, we prove the following stronger fact: if $f'$ is monotone on $I$, then $f'$ must in fact be continuous on $I$.
+
+\section{Darboux's Theorem}
+
+We shall use the following classical result.
+
+\begin{theorem}[Darboux]
+Let $f$ be continuous on $[a,b]$ and differentiable on $(a,b)$.
+If $k$ is a value between $f'(x_1)$ and $f'(x_2)$ for some $x_1,x_2\in(a,b)$ with $x_1<x_2$,
+then there exists $c\in(x_1,x_2)$ such that
+\[
+f'(c)=k.
+\]
+\end{theorem}
+
+\begin{proof}
+Assume $f'(x_1)<k<f'(x_2)$; the other case is similar.
+Define
+\[
+g(x)=f(x)-kx.
+\]
+Then $g$ is continuous on $[x_1,x_2]$ and differentiable on $(x_1,x_2)$.
+Moreover,
+\[
+g'(x_1)=f'(x_1)-k<0,
+\qquad
+g'(x_2)=f'(x_2)-k>0.
+\]
+Since $g$ is continuous on the compact interval $[x_1,x_2]$, it attains a minimum at some point $c\in[x_1,x_2]$.
+Because $g'(x_1)<0$, the minimum cannot occur at $x_1$.
+Because $g'(x_2)>0$, the minimum cannot occur at $x_2$.
+Hence the minimum occurs at some interior point $c\in(x_1,x_2)$.
+By Fermat's theorem,
+\[
+g'(c)=0,
+\]
+so
+\[
+f'(c)=k.
+\]
+
+\end{proof}
+
+\section{Main Result}
+
+\begin{theorem}
+Let $f:I\to\mathbb{R}$ be differentiable on an open interval $I$.
+If $f'$ is monotone on $I$, then $f'$ is continuous on $I$.
+\end{theorem}
+
+\begin{proof}[Proof 1: Contradiction via Darboux's Theorem]
+It suffices to consider the case where $f'$ is monotone increasing; the decreasing case is analogous.
+
+Fix $c\in I$.
+Since $f'$ is monotone increasing, the one-sided limits
+\[
+A:=\lim_{x\to c^-}f'(x),
+\qquad
+B:=\lim_{x\to c^+}f'(x)
+\]
+exist.
+
+Suppose that $f'$ is discontinuous at $c$.
+Then at least one of the inequalities
+\[
+A<f'(c), \qquad f'(c)<B
+\]
+must hold.
+In particular, we have
+\[
+A<B.
+\]
+
+Choose $k\in(A,B)$ such that $k\neq f'(c)$.
+Now choose points $x_1,x_2\in I$ with
+\[
+x_1<c<x_2.
+\]
+By monotonicity,
+\[
+f'(x_1)\leq A<k<B\leq f'(x_2).
+\]
+By Darboux's Theorem, there exists $d\in(x_1,x_2)$ such that
+\[
+f'(d)=k.
+\]
+
+We now derive a contradiction.
+
+If $d<c$, then monotonicity gives
+\[
+f'(d)\leq A<k,
+\]
+contrary to $f'(d)=k$.
+
+If $d>c$, then monotonicity gives
+\[
+f'(d)\geq B>k,
+\]
+again contrary to $f'(d)=k$.
+
+If $d=c$, then
+\[
+f'(c)=k,
+\]
+which contradicts the choice of $k$.
+
+Thus $f'$ must be continuous at $c$.
+Since $c\in I$ was arbitrary, $f'$ is continuous on $I$.
+
+\end{proof}
+
+\begin{proof}[Proof 2: One-Sided Limits and the Mean Value Theorem]
+Again, assume that $f'$ is monotone increasing.
+
+Fix $c\in I$, and let
+\[
+A:=\lim_{x\to c^-}f'(x),
+\qquad
+B:=\lim_{x\to c^+}f'(x).
+\]
+We show that
+\[
+A=f'(c)=B.
+\]
+
+First let $h>0$ be small enough that $c+h\in I$.
+By the Mean Value Theorem, there exists $\xi_h\in(c,c+h)$ such that
+\[
+\frac{f(c+h)-f(c)}{h}=f'(\xi_h).
+\]
+Since $c<\xi_h<c+h$ and $f'$ is increasing, we have
+\[
+B\leq f'(\xi_h)\leq f'(c+h).
+\]
+Hence
+\[
+B\leq \frac{f(c+h)-f(c)}{h}\leq f'(c+h).
+\]
+Now let $h\to 0^+$.
+Because $f$ is differentiable at $c$,
+\[
+\lim_{h\to 0^+}\frac{f(c+h)-f(c)}{h}=f'(c),
+\]
+and by definition of $B$,
+\[
+\lim_{h\to 0^+}f'(c+h)=B.
+\]
+Therefore,
+\[
+B\leq f'(c)\leq B,
+\]
+so
+\[
+f'(c)=B.
+\]
+
+Next let $h<0$ be close to $0$.
+Again by the Mean Value Theorem, there exists $\xi_h\in(c+h,c)$ such that
+\[
+\frac{f(c+h)-f(c)}{h}=f'(\xi_h).
+\]
+Since $c+h<\xi_h<c$ and $f'$ is increasing, we have
+\[
+f'(c+h)\leq f'(\xi_h)\leq A.
+\]
+Thus
+\[
+f'(c+h)\leq \frac{f(c+h)-f(c)}{h}\leq A.
+\]
+Letting $h\to 0^-$, we obtain
+\[
+A\leq f'(c)\leq A,
+\]
+hence
+\[
+f'(c)=A.
+\]
+
+Therefore,
+\[
+A=f'(c)=B,
+\]
+so $f'$ is continuous at $c$.
+Since $c\in I$ was arbitrary, $f'$ is continuous on $I$.
+
+\end{proof}
+
+\end{document}
