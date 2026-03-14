@@ -2,14 +2,13 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsthm,amssymb}
-\usepackage{graphicx}
 
 \newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
 
-\title{A Monotone Derivative is Continuous}
+\title{Monotone Derivatives are Continuous}
 \author{}
 \date{14 March 2026}
 
@@ -18,42 +17,70 @@
 \maketitle
 
 \begin{abstract}
-A classical theorem of Darboux states that derivatives have the Intermediate Value Property.
-In this note, we prove that if $f'$ is monotone on an interval, then $f'$ is continuous on that interval.
-We present two proofs: one based on Darboux's Theorem, and another based on one-sided limits and the Mean Value Theorem.
+Derivatives need not be continuous, but they are far from arbitrary functions.
+A classical theorem of Darboux states that every derivative has the Intermediate Value Property.
+In this note we explain how this fact interacts with monotonicity:
+if the derivative $f'$ is monotone on an interval, then $f'$ must actually be continuous there.
+We give two proofs.
+The first isolates the key idea very directly: a monotone discontinuity would force a jump, while Darboux's Theorem forbids jumps for derivatives.
+The second proof uses one-sided limits together with the Mean Value Theorem.
 \end{abstract}
 
 \section{Introduction}
 
-Let $f:I\to\mathbb{R}$ be differentiable on an open interval $I$.
-Although the derivative of a differentiable function need not be continuous, it still satisfies the Intermediate Value Property.
-For example, the function
+In elementary calculus, one often first meets derivatives through familiar smooth examples:
+polynomials, trigonometric functions, exponentials, and so on.
+In such cases the derivative is not only defined, but also continuous.
+It is therefore natural at first to suspect that differentiability should automatically imply continuity of the derivative.
+
+This is false.
+A function may be differentiable everywhere and yet have a derivative that fails to be continuous at some point.
+A standard example is
 \[
 f(x)=
 \begin{cases}
 x^2\sin(1/x), & x\neq 0,\\
-0, & x=0
+0, & x=0.
 \end{cases}
 \]
-is differentiable on $\mathbb{R}$, but its derivative is not continuous at $0$.
+This function is differentiable on $\mathbb{R}$, but its derivative is not continuous at $0$.
 
-In this note, we prove the following stronger fact: if $f'$ is monotone on $I$, then $f'$ must in fact be continuous on $I$.
+Nevertheless, derivatives still satisfy an important regularity property.
+They cannot jump from one value to another while skipping intermediate values.
+This is the content of Darboux's Theorem: every derivative has the Intermediate Value Property.
+
+The purpose of this note is to show that if we add one more hypothesis, namely monotonicity, then this residual regularity becomes strong enough to force continuity.
+
+\begin{theorem}\label{thm:main}
+Let $f:I\to\mathbb{R}$ be differentiable on an open interval $I$.
+If $f'$ is monotone on $I$, then $f'$ is continuous on $I$.
+\end{theorem}
+
+This is a very natural result.
+A monotone function may certainly be discontinuous, but any discontinuity of a monotone function is of jump type.
+On the other hand, a derivative cannot have a jump, because of Darboux's Theorem.
+The theorem above follows from combining these two observations.
 
 \section{Darboux's Theorem}
 
-We shall use the following classical result.
+We begin with the classical theorem on which the first proof rests.
 
-\begin{theorem}[Darboux]
+\begin{theorem}[Darboux]\label{thm:darboux}
 Let $f$ be continuous on $[a,b]$ and differentiable on $(a,b)$.
-If $k$ is a value between $f'(x_1)$ and $f'(x_2)$ for some $x_1,x_2\in(a,b)$ with $x_1<x_2$,
-then there exists $c\in(x_1,x_2)$ such that
+Suppose $x_1,x_2\in(a,b)$ with $x_1<x_2$, and let $k$ be a real number between $f'(x_1)$ and $f'(x_2)$.
+Then there exists $c\in(x_1,x_2)$ such that
 \[
 f'(c)=k.
 \]
 \end{theorem}
 
+In other words, $f'$ has the Intermediate Value Property, even though $f'$ need not be continuous.
+
 \begin{proof}
-Assume $f'(x_1)<k<f'(x_2)$; the other case is similar.
+Assume for definiteness that
+\[
+f'(x_1)<k<f'(x_2).
+\]
 Define
 \[
 g(x)=f(x)-kx.
@@ -65,164 +92,259 @@ g'(x_1)=f'(x_1)-k<0,
 \qquad
 g'(x_2)=f'(x_2)-k>0.
 \]
+
 Since $g$ is continuous on the compact interval $[x_1,x_2]$, it attains a minimum at some point $c\in[x_1,x_2]$.
 Because $g'(x_1)<0$, the minimum cannot occur at $x_1$.
-Because $g'(x_2)>0$, the minimum cannot occur at $x_2$.
+Likewise, because $g'(x_2)>0$, the minimum cannot occur at $x_2$.
 Hence the minimum occurs at some interior point $c\in(x_1,x_2)$.
+
 By Fermat's theorem,
 \[
-g'(c)=0,
+g'(c)=0.
 \]
-so
+Therefore
 \[
-f'(c)=k.
+f'(c)-k=0,
 \]
-
+so $f'(c)=k$.
 \end{proof}
 
-\section{Main Result}
+\section{A preliminary observation on monotone functions}
 
-\begin{theorem}
-Let $f:I\to\mathbb{R}$ be differentiable on an open interval $I$.
-If $f'$ is monotone on $I$, then $f'$ is continuous on $I$.
-\end{theorem}
+The following elementary fact about monotone functions is all we need.
 
-\begin{proof}[Proof 1: Contradiction via Darboux's Theorem]
-It suffices to consider the case where $f'$ is monotone increasing; the decreasing case is analogous.
+\begin{proposition}\label{prop:monotone-limits}
+Let $g$ be monotone increasing on an open interval $I$, and let $c\in I$.
+Then the one-sided limits
+\[
+\lim_{x\to c^-}g(x)
+\qquad\text{and}\qquad
+\lim_{x\to c^+}g(x)
+\]
+exist.
+Moreover, if we write
+\[
+A:=\lim_{x\to c^-}g(x),
+\qquad
+B:=\lim_{x\to c^+}g(x),
+\]
+then
+\[
+A\le g(c)\le B.
+\]
+\end{proposition}
+
+\begin{proof}
+Because $g$ is increasing, the set of values $g(x)$ for $x<c$ is bounded above by $g(c)$, so its supremum exists.
+This supremum is exactly the left-hand limit:
+\[
+A=\sup\{g(x):x<c\}.
+\]
+Similarly, the set of values $g(x)$ for $x>c$ is bounded below by $g(c)$, so its infimum exists, and
+\[
+B=\inf\{g(x):x>c\}.
+\]
+Monotonicity also immediately gives
+\[
+g(x)\le g(c)\le g(y)
+\qquad (x<c<y),
+\]
+and hence
+\[
+A\le g(c)\le B.
+\]
+\end{proof}
+
+\begin{remark}
+A monotone function need not be continuous.
+However, its discontinuities are highly restricted: they can only be jumps.
+Proposition \ref{prop:monotone-limits} is the precise local expression of that fact.
+\end{remark}
+
+\section{First proof of the main theorem}
+
+We now prove Theorem \ref{thm:main} using Darboux's Theorem.
+
+\begin{proof}[Proof of Theorem \ref{thm:main}: first method]
+It suffices to treat the case in which $f'$ is monotone increasing.
+The decreasing case follows by applying the same argument to $-f'$.
 
 Fix $c\in I$.
-Since $f'$ is monotone increasing, the one-sided limits
+By Proposition \ref{prop:monotone-limits}, the one-sided limits
 \[
 A:=\lim_{x\to c^-}f'(x),
 \qquad
 B:=\lim_{x\to c^+}f'(x)
 \]
-exist.
+exist and satisfy
+\[
+A\le f'(c)\le B.
+\]
 
-Suppose that $f'$ is discontinuous at $c$.
+Suppose, toward a contradiction, that $f'$ is not continuous at $c$.
 Then at least one of the inequalities
 \[
-A<f'(c), \qquad f'(c)<B
+A<f'(c),
+\qquad
+f'(c)<B
 \]
-must hold.
-In particular, we have
+must be strict.
+In particular,
 \[
 A<B.
 \]
 
-Choose $k\in(A,B)$ such that $k\neq f'(c)$.
+Choose a number $k$ such that
+\[
+A<k<B
+\]
+and also $k\ne f'(c)$.
 Now choose points $x_1,x_2\in I$ with
 \[
 x_1<c<x_2.
 \]
-By monotonicity,
+Since $f'$ is increasing, we have
 \[
-f'(x_1)\leq A<k<B\leq f'(x_2).
+f'(x_1)\le A<k<B\le f'(x_2).
 \]
-By Darboux's Theorem, there exists $d\in(x_1,x_2)$ such that
+By Darboux's Theorem, there exists some $d\in(x_1,x_2)$ such that
 \[
 f'(d)=k.
 \]
 
-We now derive a contradiction.
+But this is impossible.
 
 If $d<c$, then monotonicity gives
 \[
-f'(d)\leq A<k,
+f'(d)\le A<k,
 \]
-contrary to $f'(d)=k$.
+contradicting $f'(d)=k$.
 
 If $d>c$, then monotonicity gives
 \[
-f'(d)\geq B>k,
+f'(d)\ge B>k,
 \]
-again contrary to $f'(d)=k$.
+again contradicting $f'(d)=k$.
 
 If $d=c$, then
 \[
 f'(c)=k,
 \]
-which contradicts the choice of $k$.
+which contradicts the way $k$ was chosen.
 
-Thus $f'$ must be continuous at $c$.
-Since $c\in I$ was arbitrary, $f'$ is continuous on $I$.
-
+Thus our assumption was false.
+Hence $f'$ is continuous at $c$.
+Since $c\in I$ was arbitrary, $f'$ is continuous on all of $I$.
 \end{proof}
 
-\begin{proof}[Proof 2: One-Sided Limits and the Mean Value Theorem]
-Again, assume that $f'$ is monotone increasing.
+\section{Second proof via the Mean Value Theorem}
 
-Fix $c\in I$, and let
+The first proof captures the main conceptual point.
+For completeness, we also give a second proof that uses the Mean Value Theorem more explicitly.
+
+\begin{proof}[Proof of Theorem \ref{thm:main}: second method]
+Again assume that $f'$ is monotone increasing, and fix $c\in I$.
+Let
 \[
 A:=\lim_{x\to c^-}f'(x),
 \qquad
 B:=\lim_{x\to c^+}f'(x).
 \]
-We show that
+We shall prove that
 \[
 A=f'(c)=B.
 \]
 
-First let $h>0$ be small enough that $c+h\in I$.
+First consider $h>0$ sufficiently small.
 By the Mean Value Theorem, there exists $\xi_h\in(c,c+h)$ such that
 \[
 \frac{f(c+h)-f(c)}{h}=f'(\xi_h).
 \]
-Since $c<\xi_h<c+h$ and $f'$ is increasing, we have
+Because $c<\xi_h<c+h$ and $f'$ is increasing, we have
 \[
-B\leq f'(\xi_h)\leq f'(c+h).
+B\le f'(\xi_h)\le f'(c+h).
 \]
 Hence
 \[
-B\leq \frac{f(c+h)-f(c)}{h}\leq f'(c+h).
+B\le \frac{f(c+h)-f(c)}{h}\le f'(c+h).
 \]
 Now let $h\to 0^+$.
-Because $f$ is differentiable at $c$,
+The middle term tends to $f'(c)$ because $f$ is differentiable at $c$, while the right-hand term tends to $B$ by definition.
+Therefore
 \[
-\lim_{h\to 0^+}\frac{f(c+h)-f(c)}{h}=f'(c),
-\]
-and by definition of $B$,
-\[
-\lim_{h\to 0^+}f'(c+h)=B.
-\]
-Therefore,
-\[
-B\leq f'(c)\leq B,
+B\le f'(c)\le B,
 \]
 so
 \[
 f'(c)=B.
 \]
 
-Next let $h<0$ be close to $0$.
+Now consider $h<0$ with $|h|$ small.
 Again by the Mean Value Theorem, there exists $\xi_h\in(c+h,c)$ such that
 \[
 \frac{f(c+h)-f(c)}{h}=f'(\xi_h).
 \]
-Since $c+h<\xi_h<c$ and $f'$ is increasing, we have
+Since $c+h<\xi_h<c$ and $f'$ is increasing,
 \[
-f'(c+h)\leq f'(\xi_h)\leq A.
+f'(c+h)\le f'(\xi_h)\le A.
 \]
 Thus
 \[
-f'(c+h)\leq \frac{f(c+h)-f(c)}{h}\leq A.
+f'(c+h)\le \frac{f(c+h)-f(c)}{h}\le A.
 \]
 Letting $h\to 0^-$, we obtain
 \[
-A\leq f'(c)\leq A,
+A\le f'(c)\le A,
 \]
-hence
+and so
 \[
 f'(c)=A.
 \]
 
-Therefore,
+Combining the two identities gives
 \[
-A=f'(c)=B,
+A=f'(c)=B.
 \]
-so $f'$ is continuous at $c$.
-Since $c\in I$ was arbitrary, $f'$ is continuous on $I$.
-
+Hence $f'$ is continuous at $c$.
+Since $c$ was arbitrary, $f'$ is continuous on $I$.
 \end{proof}
+
+\section{Concluding remark}
+
+The theorem fits into a broader theme in real analysis:
+derivatives may behave irregularly, but they still satisfy strong structural constraints.
+Darboux's Theorem is one of the most important such constraints.
+Once monotonicity is added, the remaining room for pathology disappears, and continuity follows.
+
+One may also view the theorem as a useful bridge between two familiar facts:
+monotone functions have one-sided limits and only jump-type discontinuities, while derivatives have the Intermediate Value Property and therefore cannot jump.
+Together, these facts force a monotone derivative to be continuous.
+
+\begin{thebibliography}{9}
+
+\bibitem{abbott}
+Stephen Abbott,
+\emph{Understanding Analysis},
+2nd ed.,
+Springer, New York, 2015.
+
+\bibitem{courant-john}
+Richard Courant and Fritz John,
+\emph{Introduction to Calculus and Analysis. Vol. I},
+Springer, New York, 1999.
+
+\bibitem{lang}
+Serge Lang,
+\emph{Undergraduate Analysis},
+2nd ed.,
+Springer, New York, 1997.
+
+\bibitem{rudin}
+Walter Rudin,
+\emph{Principles of Mathematical Analysis},
+3rd ed.,
+McGraw--Hill, New York, 1976.
+
+\end{thebibliography}
 
 \end{document}
