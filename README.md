@@ -1,6 +1,6 @@
 # Monotone Derivatives are Continuous
 
-**[📥 Download the latest compiled PDF of this paper here](https://github.com/Yim-Jhune/Monotone_derivatives_are_continuous/releases/latest/download/continuity_1.pdf)**
+**[📥 Download the latest compiled PDF of this paper here](https://github.com/jhune-yim/Monotone_derivatives_are_continuous/releases/latest/download/continuity_1.pdf)**
 
 
 This repository contains the LaTeX source and PDF for the expository note **“Monotone Derivatives are Continuous.”**
